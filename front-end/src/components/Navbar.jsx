@@ -15,7 +15,6 @@ function Navbar() {
     localStorage.setItem('user', JSON.stringify(userMock)); */
     // Daqui pra baixo é o correto
     const { name, role } = JSON.parse(localStorage.getItem('user'));
-    console.log(name, role);
     setUserRole(role);
     setUsername(name);
   }, []);
@@ -56,7 +55,13 @@ function Navbar() {
             />
           </div>
         ) : (
-          <button type="button">PEDIDOS</button>
+          <button
+            type="button"
+            data-testid="customer_products__element-navbar-link-products"
+          >
+            PEDIDOS
+
+          </button>
         )
       }
       <h1
