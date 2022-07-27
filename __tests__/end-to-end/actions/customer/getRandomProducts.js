@@ -8,7 +8,6 @@ const getRandomProducts = () => {
 
   let totalPrice = 0;
   const cart = randomCards.map(({ id: productId, name, price }, i) => {
-    const quantity = Math.round(Math.random() * 5) || 1;
     const unitPrice = parseFloat(price);
     const subTotal = unitPrice * quantity;
     totalPrice = totalPrice + subTotal;
