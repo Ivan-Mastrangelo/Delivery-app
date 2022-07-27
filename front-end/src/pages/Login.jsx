@@ -24,6 +24,11 @@ function Login({ history }) {
   const [disabled, setDisabled] = useState(false);
   const [isLoginInvalid, setIsLoginInvalid] = useState(false);
 
+  useEffect(() => {
+    const user = localStorage.getItem('user');
+    if (user) return history.push('/customer/products');
+  }, [history]);
+
   const handleLogin = async () => {
     try {
       const userLogin = await loginService.login({ email, password });
@@ -107,6 +112,7 @@ export default Login;
 Login.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func,
+    action: PropTypes.string,
     location: PropTypes.shape({
       pathname: PropTypes.string.isRequired,
     }),

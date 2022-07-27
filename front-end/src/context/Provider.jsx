@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import deliveryContext from './deliveryContext';
 import usersService from '../services/users';
 import productsService from '../services/products';
-
+// 16, 21, 25, 26, 29, 30, 31, 32, 33, 34, 35, 36 - 41
 function Provider({ children }) {
   const [totalPrice, setTotalPrice] = useState(0);
   const [cartProducts, setCartProducts] = useState([]);
@@ -40,8 +40,8 @@ function Provider({ children }) {
     }
   };
 
-  const calcTotalPrice = (arrayCart) => arrayCart.reduce((acc, x) => {
-    const { price, quantityProduct } = x;
+  const calcTotalPrice = (arrayProducts) => arrayProducts.reduce((acc, product) => {
+    const { price, quantityProduct } = product;
     const aux = acc + parseFloat(price) * quantityProduct;
     return aux;
   }, 0);
