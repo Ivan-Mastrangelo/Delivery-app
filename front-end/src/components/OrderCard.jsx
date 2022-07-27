@@ -2,8 +2,10 @@ import React from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
+const priceParse = (priceToParse) => priceToParse.replace('.', ',');
+
 function OrderCard({
-  orderDatatest, orderId, orderStatus, orderAddress, orderData, orderTotal,
+  orderId, orderStatus, orderAddress, orderData, orderTotal, sellerCard,
 }) {
   const history = useHistory();
   const location = useLocation();
@@ -14,17 +16,24 @@ function OrderCard({
       history.push(`/customer/orders/${orderId}`);
     }
   };
+
+  const isSeller = sellerCard ? 'seller' : 'customer';
+
+  const dataTestOrderId = `${isSeller}_orders__element-order-id-${orderId}`;
+  const dataTestDeliveryStatus = `${isSeller}_orders__element-delivery-status-${orderId}`;
+  const dataTestOrderDate = `${isSeller}_orders__element-order-date-${orderId}`;
+  const dataTestCardPrice = `${isSeller}_orders__element-card-price-${orderId}`;
+
   return (
     <div
       className="order-card flex-row"
-      data-testid={ `${orderDatatest}-${orderId}` }
       onClick={ handleRedirectOrders }
       onKeyPress={ handleRedirectOrders }
       role="none"
     >
       <div className="orderId flex-column">
         <span
-          data-testid={ `customer_orders__element-order-id-${orderId}` }
+          data-testid={ dataTestOrderId }
         >
           {`pedido ${orderId}`}
         </span>
@@ -32,11 +41,25 @@ function OrderCard({
       <div className="status-card flex-column">
         <div className="status-infos flex-row">
           <div className="status-title">
-            <h3>{ orderStatus }</h3>
+            <h3
+              data-testid={ dataTestDeliveryStatus }
+            >
+              { orderStatus }
+            </h3>
           </div>
           <div className="orderInfos flex-column">
-            <p className="order-data">{ orderData }</p>
-            <p className="order-total">{ `R$${orderTotal}` }</p>
+            <p
+              className="order-data"
+              data-testid={ dataTestOrderDate }
+            >
+              { orderData }
+            </p>
+            <p
+              className="order-total"
+              data-testid={ dataTestCardPrice }
+            >
+              { priceParse(orderTotal) }
+            </p>
           </div>
         </div>
         {
@@ -56,10 +79,10 @@ function OrderCard({
 export default OrderCard;
 
 OrderCard.propTypes = {
-  orderDatatest: PropTypes.string.isRequired,
   orderId: PropTypes.number.isRequired,
   orderStatus: PropTypes.string.isRequired,
   orderData: PropTypes.string.isRequired,
   orderTotal: PropTypes.string.isRequired,
   orderAddress: PropTypes.string.isRequired,
+  sellerCard: PropTypes.bool.isRequired,
 };
