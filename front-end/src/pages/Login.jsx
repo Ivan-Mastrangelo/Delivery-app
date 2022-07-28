@@ -23,20 +23,24 @@ function Login({ history }) {
   const [password, setPassword] = useState('');
   const [disabled, setDisabled] = useState(false);
   const [isLoginInvalid, setIsLoginInvalid] = useState(false);
+  const isLogged = localStorage.getItem('user');
+  const defaultRoute = '/customer/products';
+
+  if (isLogged) {
+    history.push(defaultRoute);
+  }
 
   useEffect(() => {
     const user = localStorage.getItem('user');
-    if (user) return history.push('/customer/products');
+    if (user) return history.push(defaultRoute);
   }, [history]);
 
   const handleLogin = async () => {
     try {
       const userLogin = await loginService.login({ email, password });
-      if (userLogin) {
-        localStorage.setItem('user', JSON.stringify(userLogin));
-        if (userLogin.role === 'customer') history.push('/customer/products');
-        if (userLogin.role === 'seller') history.push('/seller/orders');
-      }
+      localStorage.setItem('user', JSON.stringify(userLogin));
+      if (userLogin.role === 'customer') history.push(defaultRoute);
+      if (userLogin.role === 'seller') history.push('/seller/orders');
     } catch {
       setIsLoginInvalid(true);
     }
